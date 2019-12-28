@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 
 function Pokemon(props) {
-  const { name, imageUrl } = props;
+  const { name, imageUrl, id } = props;
   return (
-    <React.Fragment>
-      <td>{name}</td>
-      <td>
-        <img src={imageUrl} alt={name} />
-      </td>
-    </React.Fragment>
+    <div className="card" style={{ width: 140 }}>
+      <img className="card-img-top" src={imageUrl} alt={name} />
+      <div className="card-body">
+        <h5 class="card-title badge badge-primary">{`No. ${id}`}</h5>
+        <p className="card-text" style={{ textTransform: "capitalize" }}>
+          {name}
+        </p>
+      </div>
+    </div>
   );
 }
 

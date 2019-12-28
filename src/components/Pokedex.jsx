@@ -14,15 +14,20 @@ class Pokedex extends Component {
 
   render() {
     return (
-      <table>
-        <tbody>
+      <div className="container">
+        <div className="row">
+          <div className="col alert alert-info" style={{ width: "100%" }}>
+            Pokemon
+          </div>
+        </div>
+        <div className="row">
           {this.state.pokemons.map(info => (
-            <tr key={info.name}>
+            <div key={info.name} className="col">
               <Pokemon {...info} />
-            </tr>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
     );
   }
 }
@@ -40,8 +45,8 @@ function getResourceUrl(url) {
 async function getPokemonInfo(pokemon) {
   const { name, url } = pokemon;
   const resp = await axios.get(getResourceUrl(url));
-  const imageUrl = await resp.data.sprites.front_default;
-  return { name, imageUrl };
+  const info = await resp.data;
+  return { name, imageUrl: info.sprites.front_default, id: info.order };
 }
 
 async function getPokemons(path = "/pokemon") {
