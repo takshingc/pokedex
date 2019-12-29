@@ -8,7 +8,7 @@ function Pokemon(props) {
         className="card-img-top mx-auto d-block"
         src={imageUrl}
         alt={name}
-        style={{ width: 140 }}
+        style={{ maxWidth: 140 }}
       />
       <div className="card-body">
         <h5 class="card-title badge badge-primary">{`No. ${id}`}</h5>
