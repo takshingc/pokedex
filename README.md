@@ -75,5 +75,4 @@ docker build -t pokedex .
 
 ## Run Container
 
-docker run -v \${PWD}:/app -p 3001:3000 pokedex
-docker run --mount source=`${PWD}`,target=/app -p 3001:3000 pokedex
+docker run -v \${PWD}:/app -p 3000:3000 pokedex

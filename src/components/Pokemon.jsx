@@ -11,7 +11,7 @@ function Pokemon(props) {
         style={{ maxWidth: 140 }}
       />
       <div className="card-body">
-        <h5 class="card-title badge badge-primary">{`No. ${id}`}</h5>
+        <h5 className="card-title badge badge-primary">{`No. ${id}`}</h5>
         <p className="card-text" style={{ textTransform: "capitalize" }}>
           {name}
         </p>
