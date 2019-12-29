@@ -22,7 +22,7 @@ class Pokedex extends Component {
         </div>
         <div className="row">
           {this.state.pokemons.map(info => (
-            <div key={info.name} className="col">
+            <div key={info.name} className="col-3">
               <Pokemon {...info} />
             </div>
           ))}
