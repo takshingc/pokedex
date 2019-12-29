@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 function Pokemon(props) {
   const { name, imageUrl, id } = props;

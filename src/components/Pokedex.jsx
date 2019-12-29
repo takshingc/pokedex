@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import Pokemon from "./Pokemon";
-import packageJson from "../../package.json";
 
 class Pokedex extends Component {
   state = { pokemons: [] };
@@ -32,24 +31,14 @@ class Pokedex extends Component {
   }
 }
 
-function getResourceUrl(url) {
-  const pattern = new RegExp(`^${packageJson.proxy}([/a-z0-9]+)$`);
-  const match = url.match(pattern);
-  if (match != null) {
-    return match[1];
-  } else {
-    return "";
-  }
-}
-
 async function getPokemonInfo(pokemon) {
   const { name, url } = pokemon;
-  const resp = await axios.get(getResourceUrl(url));
+  const resp = await axios.get(url);
   const info = await resp.data;
   return { name, imageUrl: info.sprites.front_default, id: info.order };
 }
 
-async function getPokemons(path = "/pokemon") {
+async function getPokemons(path = "https://pokeapi.co/api/v2/pokemon") {
   const resp = await axios.get(path);
   const pokemons = await axios.all(
     resp.data.results.map(pokemon => getPokemonInfo(pokemon))
