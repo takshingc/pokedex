@@ -66,3 +66,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+# Docker
+
+## Build Image
+
+docker build -t pokedex .
+
+## Run Container
+
+docker run -v \${PWD}:/app -p 3001:3000 pokedex
+docker run --mount source=`${PWD}`,target=/app -p 3001:3000 pokedex
