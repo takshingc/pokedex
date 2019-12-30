@@ -4,6 +4,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import Pokedex from "./components/Pokedex";
 
+const COOKIE_DURATION = 60 * 60;
 const LAST_PAGE = 15;
 const POKEMONS_PER_PAGE = 20;
 const POKEMONS_OFFSET_BASE = 20;
@@ -19,10 +20,70 @@ class App extends Component {
   };
 
   async componentDidMount() {
-    await this.setPokemons();
+    let page = getPage();
+    await this.setPokemons(page);
   }
 
-  setPokemons = async (page = 1) => {
+  handleClick = async event => {
+    const page = parseInt(event.target.id, 10);
+    document.cookie = `page=${page};max-age=${COOKIE_DURATION}`;
+    await this.setPokemons(page);
+  };
+
+  render() {
+    return (
+      <div className="App">
+        <NavBar />
+        <Pokedex pokemons={this.state.pokemons} />
+
+        <nav aria-label="..." className="navbar">
+          <ul className="pagination mx-auto">
+            <li className={"page-item" + (this.state.page <= 1 && " disabled")}>
+              <button
+                className="page-link"
+                tabIndex="-1"
+                onClick={() => this.setPokemons(this.state.page - 1)}
+              >
+                Previous
+              </button>
+            </li>
+            {this.state.page_range.map(number => (
+              <li
+                key={number}
+                className={
+                  "page-item" + (this.state.page === number && " active")
+                }
+              >
+                <button
+                  id={number}
+                  className="page-link active"
+                  onClick={this.handleClick}
+                >
+                  {number}
+                </button>
+              </li>
+            ))}
+            <li
+              className={
+                "page-item" + (this.state.page >= LAST_PAGE && " disabled")
+              }
+            >
+              <button
+                className="page-link"
+                onClick={() => {
+                  this.setPokemons(this.state.page + 1);
+                }}
+              >
+                Next
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    );
+  }
+
+  setPokemons = async page => {
     const { limit, offsetBase } = this.state;
     const offset = offsetBase * (page - 1);
 
@@ -46,71 +107,8 @@ class App extends Component {
     let pokemons = await axios.all(
       resp.data.results.map(pokemon => getPokemonInfo(pokemon))
     );
-    this.setState({ pokemons, page, page_range });
+    this.setState({ pokemons, page_range, page });
   };
-
-  handleClick = async event => {
-    const page = parseInt(event.target.id, 10);
-    await this.setPokemons(page);
-  };
-
-  render() {
-    const pages = this.state.page_range.map(number => {
-      return (
-        <li
-          key={number}
-          className={
-            number === this.state.page ? "page-item active" : "page-item"
-          }
-        >
-          <button
-            className="page-link"
-            key={number}
-            id={number}
-            onClick={this.handleClick}
-          >
-            {number}
-          </button>
-        </li>
-      );
-    });
-
-    return (
-      <div className="App">
-        <NavBar />
-        <Pokedex pokemons={this.state.pokemons} />
-
-        <nav aria-label="..." className="navbar">
-          <ul className="pagination mx-auto">
-            <li className={"page-item" + (this.state.page <= 1 && " disabled")}>
-              <button
-                className="page-link"
-                tabIndex="-1"
-                onClick={() => this.setPokemons(this.state.page - 1)}
-              >
-                Previous
-              </button>
-            </li>
-            {pages}
-            <li
-              className={
-                "page-item" + (this.state.page >= LAST_PAGE && " disabled")
-              }
-            >
-              <button
-                className="page-link"
-                onClick={() => {
-                  this.setPokemons(this.state.page + 1);
-                }}
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    );
-  }
 }
 
 async function getPokemonInfo(pokemon) {
@@ -122,6 +120,16 @@ async function getPokemonInfo(pokemon) {
 
 function range(start, end) {
   return [...Array(end).keys()].slice(start);
+}
+
+function getCookies(cookieStr) {
+  const cookies = cookieStr.split(";").map(j => j.trim().split("="));
+  return new Map(cookies);
+}
+
+function getPage() {
+  const cookies = getCookies(document.cookie);
+  return cookies.has("page") ? parseInt(cookies.get("page"), 10) : 1;
 }
 
 export default App;
