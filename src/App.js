@@ -4,6 +4,7 @@ import "./App.css";
 import NavBar from "./components/NavBar";
 import Pokedex from "./components/Pokedex";
 
+const LAST_PAGE = 15;
 const POKEMONS_PER_PAGE = 20;
 const POKEMONS_OFFSET_BASE = 20;
 const API_URL = "https://pokeapi.co/api/v2/pokemon";
@@ -12,7 +13,6 @@ class App extends Component {
   state = {
     page: 1,
     page_range: [1, 2, 3, 4, 5],
-    apiUrl: API_URL,
     limit: POKEMONS_PER_PAGE,
     offsetBase: POKEMONS_OFFSET_BASE,
     pokemons: []
@@ -23,11 +23,11 @@ class App extends Component {
   }
 
   setPokemons = (page = 1) => {
-    const { apiUrl, limit, offsetBase } = this.state;
+    const { limit, offsetBase } = this.state;
     const offset = offsetBase * (page - 1);
 
     axios
-      .get(apiUrl, {
+      .get(API_URL, {
         params: { limit, offset }
       })
       .then(resp => {
@@ -35,21 +35,17 @@ class App extends Component {
         axios
           .all(pokemons_resp.map(pokemon => getPokemonInfo(pokemon)))
           .then(pokemons => {
-            const range = this.state.page_range;
-            const first_page = range[0];
-            let last_page = range[range.length - 1];
+            let page_range = this.state.page_range;
+            let first_page = page_range[0];
+            let last_page = page_range[page_range.length - 1];
 
-            let page_range = range;
-            if (page >= last_page && last_page <= 13) {
-              last_page = page + 5 >= 15 ? 16 : page + 5;
-              page_range = [...Array(last_page).keys()].slice(
-                last_page - 5,
-                last_page
-              );
+            if (page > last_page) {
+              last_page = Math.min(page + 4, LAST_PAGE);
+              page_range = range(last_page - 4, last_page + 1);
+            } else if (page < first_page) {
+              first_page = Math.max(1, page - 4);
+              page_range = range(first_page, first_page + 5);
             }
-            // else if (page <= first_page && page >= 1) {
-            //   page_range = [...Array(page).keys()].slice(page - 5, page);
-            // }
             this.setState({ pokemons, page, page_range });
           });
       });
@@ -104,7 +100,9 @@ class App extends Component {
             {pages}
             <li
               className={
-                this.state.page === 15 ? "page-item disabled" : "page-item"
+                this.state.page >= LAST_PAGE
+                  ? "page-item disabled"
+                  : "page-item"
               }
             >
               <button
@@ -128,6 +126,10 @@ async function getPokemonInfo(pokemon) {
   const resp = await axios.get(url);
   const info = await resp.data;
   return { name, imageUrl: info.sprites.front_default, id: info.order };
+}
+
+function range(start, end) {
+  return [...Array(end).keys()].slice(start);
 }
 
 export default App;
