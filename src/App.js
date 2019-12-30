@@ -18,42 +18,40 @@ class App extends Component {
     pokemons: []
   };
 
-  componentDidMount() {
-    this.setPokemons();
+  async componentDidMount() {
+    await this.setPokemons();
   }
 
-  setPokemons = (page = 1) => {
+  setPokemons = async (page = 1) => {
     const { limit, offsetBase } = this.state;
     const offset = offsetBase * (page - 1);
 
-    axios
-      .get(API_URL, {
-        params: { limit, offset }
-      })
-      .then(resp => {
-        const pokemons_resp = resp.data.results;
-        axios
-          .all(pokemons_resp.map(pokemon => getPokemonInfo(pokemon)))
-          .then(pokemons => {
-            let page_range = this.state.page_range;
-            let first_page = page_range[0];
-            let last_page = page_range[page_range.length - 1];
+    // sync
+    let page_range = this.state.page_range;
+    let first_page = page_range[0];
+    let last_page = page_range[page_range.length - 1];
 
-            if (page > last_page) {
-              last_page = Math.min(page + 4, LAST_PAGE);
-              page_range = range(last_page - 4, last_page + 1);
-            } else if (page < first_page) {
-              first_page = Math.max(1, page - 4);
-              page_range = range(first_page, first_page + 5);
-            }
-            this.setState({ pokemons, page, page_range });
-          });
-      });
+    if (page > last_page) {
+      last_page = Math.min(page + 4, LAST_PAGE);
+      page_range = range(last_page - 4, last_page + 1);
+    } else if (page < first_page) {
+      first_page = Math.max(1, page - 4);
+      page_range = range(first_page, first_page + 5);
+    }
+
+    // async
+    let resp = await axios.get(API_URL, {
+      params: { limit, offset }
+    });
+    let pokemons = await axios.all(
+      resp.data.results.map(pokemon => getPokemonInfo(pokemon))
+    );
+    this.setState({ pokemons, page, page_range });
   };
 
-  handleClick = event => {
+  handleClick = async event => {
     const page = parseInt(event.target.id, 10);
-    this.setPokemons(page);
+    await this.setPokemons(page);
   };
 
   render() {
@@ -80,15 +78,11 @@ class App extends Component {
     return (
       <div className="App">
         <NavBar />
-        <Pokedex {...this.state} />
+        <Pokedex pokemons={this.state.pokemons} />
 
         <nav aria-label="..." className="navbar">
           <ul className="pagination mx-auto">
-            <li
-              className={
-                this.state.page === 1 ? "page-item disabled" : "page-item"
-              }
-            >
+            <li className={"page-item" + (this.state.page <= 1 && " disabled")}>
               <button
                 className="page-link"
                 tabIndex="-1"
@@ -100,9 +94,7 @@ class App extends Component {
             {pages}
             <li
               className={
-                this.state.page >= LAST_PAGE
-                  ? "page-item disabled"
-                  : "page-item"
+                "page-item" + (this.state.page >= LAST_PAGE && " disabled")
               }
             >
               <button
