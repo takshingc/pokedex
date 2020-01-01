@@ -15,9 +15,9 @@ class Pokemon extends Component {
   render() {
     const { id, name, imageUrl } = this.state;
     return (
-      <div className="card">
+      <div className="card h-100">
         <img
-          className="card-img-top mx-auto d-block"
+          className="card-img-top mx-auto"
           src={imageUrl}
           alt={name}
           style={{ maxWidth: 140 }}

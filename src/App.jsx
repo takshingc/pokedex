@@ -17,19 +17,28 @@ class App extends Component {
     limit: POKEMONS_PER_PAGE,
     offsetBase: POKEMONS_OFFSET_BASE,
     upperPageBound: UPPER_PAGE_BOUND,
+    marginTop: 50,
     pokemons: []
   };
 
   componentDidMount() {
     let page = getPage(this.state.page);
     this.setPageContent(page);
+    const marginTop =
+      document.getElementById("navbardiv").firstChild.clientHeight + 10;
+    this.setState({ marginTop });
   }
 
   render() {
     return (
       <div className="App">
-        <NavBar />
-        <Pokedex pokemons={this.state.pokemons} />
+        <div id="navbardiv">
+          <NavBar />
+        </div>
+        <div className="container" style={{ marginTop: this.state.marginTop }}>
+          <Pokedex pokemons={this.state.pokemons} />
+        </div>
+
         <PageBar
           page={this.state.page}
           upperPageBound={this.state.upperPageBound}
