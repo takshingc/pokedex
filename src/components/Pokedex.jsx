@@ -6,14 +6,12 @@ function Pokedex(props) {
   return (
     <div className="container">
       <div className="row">
-        <div className="col alert alert-info" style={{ width: "100%" }}>
-          Pokemon
-        </div>
+        <div className="col">Pokemon</div>
       </div>
       <div className="row">
         {props.pokemons.map(pokemon => (
           <div key={pokemon.name} className="col-3">
-            <Pokemon {...pokemon} />
+            <Pokemon name={pokemon.name} url={pokemon.url} />
           </div>
         ))}
       </div>
