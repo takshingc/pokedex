@@ -2,14 +2,18 @@ import axios from "axios";
 import React, { Component } from "react";
 
 class Pokemon extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { id: null, name: this.props.name, imageUrl: "" };
-  }
+  state = { id: null, name: "", imageUrl: "" };
 
   async componentDidMount() {
     const data = await getInfo(this.props.url);
     this.setState(data);
+  }
+
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.url !== prevProps.url) {
+      const data = await getInfo(this.props.url);
+      this.setState(data);
+    }
   }
 
   render() {
@@ -36,7 +40,11 @@ class Pokemon extends Component {
 async function getInfo(url) {
   const resp = await axios.get(url);
   const pokemon = resp.data;
-  return { id: pokemon.order, imageUrl: pokemon.sprites.front_default };
+  return {
+    id: pokemon.id,
+    name: pokemon.name,
+    imageUrl: pokemon.sprites.front_default
+  };
 }
 
 export default Pokemon;

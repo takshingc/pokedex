@@ -12,8 +12,8 @@ function Pokedex(props) {
   for (const [index, pokemon] of props.pokemons.entries()) {
     colElement = React.createElement(
       "div",
-      { className: "col p-1", key: pokemon.name },
-      <Pokemon name={pokemon.name} url={pokemon.url} />
+      { className: "col p-1", key: index },
+      <Pokemon url={pokemon.url} />
     );
     cols.push(colElement);
     if ((index + 1) % ROW_ITEMS === 0) {
