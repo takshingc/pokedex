@@ -1,8 +1,13 @@
 import axios from "axios";
 import React, { Component } from "react";
 
+const pokeballUrl =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
+
+// const pokeballCategoryUrl = "https://pokeapi.co/api/v2/item-category/34/"
+
 class PokemonCard extends Component {
-  state = { id: null, name: null, imageUrl: null };
+  state = { url: null, id: null, name: null, imageUrl: null, isLoading: true };
 
   async componentDidMount() {
     const data = await getInfo(this.props.url);
@@ -11,20 +16,20 @@ class PokemonCard extends Component {
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.url !== prevProps.url) {
-      this.setState({ imageUrl: null });
+      this.setState({ isLoading: true });
       const data = await getInfo(this.props.url);
       this.setState(data);
     }
   }
 
   render() {
-    const { id, name, imageUrl } = this.state;
+    const { id, name, imageUrl, isLoading } = this.state;
     return (
       <a href="/#" style={{ textDecoration: "none" }}>
         <div className="card h-100">
           <img
             className="card-img-top mx-auto"
-            src={imageUrl}
+            src={isLoading ? pokeballUrl : imageUrl}
             alt={name}
             style={{ maxWidth: 140 }}
           />
@@ -47,9 +52,11 @@ async function getInfo(url) {
   const resp = await axios.get(url);
   const pokemon = resp.data;
   return {
+    url: url,
     id: pokemon.id,
     name: pokemon.name,
-    imageUrl: pokemon.sprites.front_default
+    imageUrl: pokemon.sprites.front_default,
+    isLoading: false
   };
 }
 
