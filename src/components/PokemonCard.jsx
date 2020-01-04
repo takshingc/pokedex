@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 
-class Pokemon extends Component {
+class PokemonCard extends Component {
   state = { id: null, name: null, imageUrl: null };
 
   async componentDidMount() {
@@ -53,4 +53,4 @@ async function getInfo(url) {
   };
 }
 
-export default Pokemon;
+export default PokemonCard;

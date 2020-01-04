@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { Component } from "react";
 
-import Pokemon from "./Pokemon";
+import PokemonCard from "./PokemonCard";
 
 const env = process.env;
 const API_URL = env.REACT_APP_API_URL;
@@ -34,7 +34,7 @@ class Pokedex extends Component {
     for (const [index, pokemon] of pokemons.entries()) {
       row.push(
         <div className="col p-1" key={index}>
-          <Pokemon url={pokemon.url} />
+          <PokemonCard url={pokemon.url} />
         </div>
       );
 
