@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./App.css";
-import NavBar from "./components/NavBar";
 import PageBar from "./components/PageBar";
 import Pokedex from "./components/Pokedex";
+import { getMarginTop } from "./components/utils";
 
 class App extends Component {
   state = {
@@ -10,7 +10,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const marginTop = getMarginTop(10);
+    const marginTop = getMarginTop("navbardiv", 10);
     this.setState({ marginTop });
   }
 
@@ -20,9 +20,6 @@ class App extends Component {
     const { marginTop } = this.state;
     return (
       <div className="App">
-        <div id="navbardiv">
-          <NavBar />
-        </div>
         <div className="container" style={{ marginTop }}>
           <Pokedex page={page} />
         </div>
@@ -30,10 +27,6 @@ class App extends Component {
       </div>
     );
   }
-}
-
-function getMarginTop(buffer) {
-  return document.getElementById("navbardiv").firstChild.clientHeight + buffer;
 }
 
 export default App;

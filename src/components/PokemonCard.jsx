@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 const pokeballUrl =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png";
@@ -7,7 +8,7 @@ const pokeballUrl =
 // const pokeballCategoryUrl = "https://pokeapi.co/api/v2/item-category/34/"
 
 class PokemonCard extends Component {
-  state = { url: null, id: null, name: null, imageUrl: null, isLoading: true };
+  state = { isLoading: true };
 
   async componentDidMount() {
     const data = await getInfo(this.props.url);
@@ -25,7 +26,7 @@ class PokemonCard extends Component {
   render() {
     const { id, name, imageUrl, isLoading } = this.state;
     return (
-      <a href="/#" style={{ textDecoration: "none" }}>
+      <Link to={`/pokemons/${id}`} style={{ textDecoration: "none" }}>
         <div className="card h-100">
           <img
             className="card-img-top mx-auto"
@@ -40,7 +41,7 @@ class PokemonCard extends Component {
             </p>
           </div>
         </div>
-      </a>
+      </Link>
     );
   }
 }
@@ -52,7 +53,6 @@ async function getInfo(url) {
   const resp = await axios.get(url);
   const pokemon = resp.data;
   return {
-    url: url,
     id: pokemon.id,
     name: pokemon.name,
     imageUrl: pokemon.sprites.front_default,
