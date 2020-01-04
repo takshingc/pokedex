@@ -3,14 +3,16 @@ import React, { Component } from "react";
 class PageBar extends Component {
   constructor(props) {
     super(props);
-    this.state = { pageRange: [1, 2, 3, 4, 5] };
+    this.state = {
+      pageRange: [1, 2, 3, 4, 5],
+      upperPageBound: this.props.upperPageBound
+    };
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (this.props.page !== prevProps.page) {
-      const page = this.props.page;
-      const pageRange = this.getPageRange(page);
-      this.setState({ pageRange });
+    const { page } = this.props;
+    if (!prevState.pageRange.includes(page)) {
+      this.setPageRange(page);
     }
   }
 
@@ -19,28 +21,40 @@ class PageBar extends Component {
     this.props.clickHandler(page);
   };
 
-  callClickHandler = (page, delta = 0) => {
+  handleDelta = (page, delta = 0) => {
     const currentPage = page + delta;
-    const pageRange = this.getPageRange(currentPage);
+    this.setPageRange(currentPage);
     this.props.clickHandler(currentPage);
-    this.setState({ pageRange });
   };
 
   render() {
-    const { pageRange } = this.state;
-    const { page, upperPageBound } = this.props;
+    const { pageRange, upperPageBound } = this.state;
+    const { page } = this.props;
+
+    const previousButton = page => (
+      <li className={"page-item" + (page <= 1 && " disabled")}>
+        <button
+          className="page-link"
+          tabIndex="-1"
+          onClick={() => this.handleDelta(page, -1)}
+        >
+          Previous
+        </button>
+      </li>
+    );
+
+    const nextButton = page => (
+      <li className={"page-item" + (page >= upperPageBound && " disabled")}>
+        <button className="page-link" onClick={() => this.handleDelta(page, 1)}>
+          Next
+        </button>
+      </li>
+    );
+
     return (
       <nav aria-label="..." className="navbar">
         <ul className="pagination mx-auto">
-          <li className={"page-item" + (page <= 1 && " disabled")}>
-            <button
-              className="page-link"
-              tabIndex="-1"
-              onClick={() => this.callClickHandler(page, -1)}
-            >
-              Previous
-            </button>
-          </li>
+          {previousButton(page)}
           {pageRange.map(number => (
             <li
               key={number}
@@ -55,20 +69,13 @@ class PageBar extends Component {
               </button>
             </li>
           ))}
-          <li className={"page-item" + (page >= upperPageBound && " disabled")}>
-            <button
-              className="page-link"
-              onClick={() => this.callClickHandler(page, 1)}
-            >
-              Next
-            </button>
-          </li>
+          {nextButton(page)}
         </ul>
       </nav>
     );
   }
 
-  getPageRange = page => {
+  setPageRange = page => {
     let { pageRange } = this.state;
     const { upperPageBound } = this.props;
 
@@ -82,7 +89,7 @@ class PageBar extends Component {
       firstPage = Math.max(1, page - 4);
       pageRange = range(firstPage, firstPage + 5);
     }
-    return pageRange;
+    this.setState({ pageRange });
   };
 }
 

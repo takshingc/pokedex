@@ -3,7 +3,7 @@ import React from "react";
 function NavBar(props) {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-      <button className="btn btn-link navbar-brand">PokeDex</button>
+      <span className="navbar-brand">PokeDex</span>
       <button
         className="navbar-toggler"
         type="button"
@@ -19,7 +19,10 @@ function NavBar(props) {
       <div className="collapse navbar-collapse" id="navbarsExample05">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <button className="btn btn-link nav-link">
+            <button
+              onClick={() => props.clickHandler(1)}
+              className="btn btn-link nav-link"
+            >
               Home <span className="sr-only">(current)</span>
             </button>
           </li>

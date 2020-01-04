@@ -22,7 +22,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    let page = getPage(this.state.page);
+    let page = getPage(document.cookie);
     this.setPageContent(page);
     const marginTop =
       document.getElementById("navbardiv").firstChild.clientHeight + 10;
@@ -30,18 +30,19 @@ class App extends Component {
   }
 
   render() {
+    const { pokemons, page, upperPageBound, marginTop } = this.state;
     return (
       <div className="App">
         <div id="navbardiv">
-          <NavBar />
+          <NavBar clickHandler={this.setPageContent} />
         </div>
-        <div className="container" style={{ marginTop: this.state.marginTop }}>
-          <Pokedex pokemons={this.state.pokemons} />
+        <div className="container" style={{ marginTop }}>
+          <Pokedex pokemons={pokemons} />
         </div>
 
         <PageBar
-          page={this.state.page}
-          upperPageBound={this.state.upperPageBound}
+          page={page}
+          upperPageBound={upperPageBound}
           clickHandler={this.setPageContent}
         />
       </div>
@@ -64,10 +65,10 @@ class App extends Component {
   };
 }
 
-function getPage(page) {
-  let cookies = document.cookie.split(";").map(j => j.trim().split("="));
+const getPage = cookieStr => {
+  let cookies = cookieStr.split(";").map(c => c.trim().split("="));
   cookies = new Map(cookies);
-  return cookies.has("page") ? parseInt(cookies.get("page"), 10) : page;
-}
+  return cookies.has("page") ? parseInt(cookies.get("page"), 10) : 1;
+};
 
 export default App;

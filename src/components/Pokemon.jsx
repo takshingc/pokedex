@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 
 class Pokemon extends Component {
-  state = { id: null, name: "", imageUrl: "" };
+  state = { id: null, name: null, imageUrl: null };
 
   async componentDidMount() {
     const data = await getInfo(this.props.url);
@@ -11,6 +11,7 @@ class Pokemon extends Component {
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.url !== prevProps.url) {
+      this.setState({ imageUrl: null });
       const data = await getInfo(this.props.url);
       this.setState(data);
     }
@@ -38,6 +39,9 @@ class Pokemon extends Component {
 }
 
 async function getInfo(url) {
+  if (url === null) {
+    return;
+  }
   const resp = await axios.get(url);
   const pokemon = resp.data;
   return {

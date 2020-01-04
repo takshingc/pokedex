@@ -2,31 +2,33 @@ import React from "react";
 
 import Pokemon from "./Pokemon";
 
-const ROW_ITEMS = 4;
+const numCol = 4;
 
 function Pokedex(props) {
-  const rows = [];
-  let cols = [];
-  let rowElement;
-  let colElement;
-  for (const [index, pokemon] of props.pokemons.entries()) {
-    colElement = React.createElement(
-      "div",
-      { className: "col p-1", key: index },
-      <Pokemon url={pokemon.url} />
-    );
-    cols.push(colElement);
-    if ((index + 1) % ROW_ITEMS === 0) {
-      rowElement = React.createElement(
-        "div",
-        { className: "row", key: Math.trunc(index / ROW_ITEMS) },
-        cols
+  const createRows = pokemons => {
+    const rows = [];
+    let row = [];
+
+    for (const [index, pokemon] of pokemons.entries()) {
+      row.push(
+        <div className="col p-1" key={index}>
+          <Pokemon url={pokemon.url} />
+        </div>
       );
-      rows.push(rowElement);
-      cols = [];
+
+      if (index % numCol === numCol - 1) {
+        rows.push(
+          <div className="row" key={(index + 1) / numCol}>
+            {row}
+          </div>
+        );
+        row = [];
+      }
     }
-  }
-  return React.createElement("div", { className: "container" }, rows);
+    return rows;
+  };
+
+  return <div className="container">{createRows(props.pokemons)}</div>;
 }
 
 export default Pokedex;
