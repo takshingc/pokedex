@@ -1,11 +1,33 @@
-import React from "react";
+import axios from "axios";
+import React, { Component } from "react";
 
 import Pokemon from "./Pokemon";
 
-const numCol = 4;
+const env = process.env;
+const API_URL = env.REACT_APP_API_URL;
+const LIMIT = env.REACT_APP_POKEMONS_PER_PAGE;
+const OFFSET_BASE = env.REACT_APP_POKEMONS_OFFSET_BASE;
 
-function Pokedex(props) {
-  const createRows = pokemons => {
+const NUM_COL = 4;
+
+class Pokedex extends Component {
+  state = { pokemons: [] };
+
+  async componentDidMount() {
+    const { page } = this.props;
+    await this.setContent(page);
+  }
+
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    const { page } = this.props;
+    if (prevProps.page !== page) {
+      await this.setContent(page);
+    }
+  }
+
+  render() {
+    const { pokemons } = this.state;
+
     const rows = [];
     let row = [];
 
@@ -16,19 +38,25 @@ function Pokedex(props) {
         </div>
       );
 
-      if (index % numCol === numCol - 1) {
+      if (index % NUM_COL === NUM_COL - 1) {
         rows.push(
-          <div className="row" key={(index + 1) / numCol}>
+          <div className="row" key={(index + 1) / NUM_COL}>
             {row}
           </div>
         );
         row = [];
       }
     }
-    return rows;
-  };
 
-  return <div className="container">{createRows(props.pokemons)}</div>;
+    return <div className="container">{rows}</div>;
+  }
+
+  setContent = async page => {
+    const offset = OFFSET_BASE * (page - 1);
+    const resp = await axios.get(API_URL, { params: { LIMIT, offset } });
+    const pokemons = resp.data.results;
+    this.setState({ pokemons });
+  };
 }
 
 export default Pokedex;

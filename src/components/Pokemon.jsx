@@ -20,20 +20,22 @@ class Pokemon extends Component {
   render() {
     const { id, name, imageUrl } = this.state;
     return (
-      <div className="card h-100">
-        <img
-          className="card-img-top mx-auto"
-          src={imageUrl}
-          alt={name}
-          style={{ maxWidth: 140 }}
-        />
-        <div className="card-body">
-          <h5 className="card-title badge badge-primary">{`No. ${id}`}</h5>
-          <p className="card-text" style={{ textTransform: "capitalize" }}>
-            {name}
-          </p>
+      <a href="/#" style={{ textDecoration: "none" }}>
+        <div className="card h-100">
+          <img
+            className="card-img-top mx-auto"
+            src={imageUrl}
+            alt={name}
+            style={{ maxWidth: 140 }}
+          />
+          <div className="card-body">
+            <h5 className="card-title badge badge-primary">{`No. ${id}`}</h5>
+            <p className="card-text" style={{ textTransform: "capitalize" }}>
+              {name}
+            </p>
+          </div>
         </div>
-      </div>
+      </a>
     );
   }
 }

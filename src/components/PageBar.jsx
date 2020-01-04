@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 
+const env = process.env;
+const upperPageBound = env.REACT_APP_UPPER_PAGE_BOUND;
+
 class PageBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageRange: [1, 2, 3, 4, 5],
-      upperPageBound: this.props.upperPageBound
+      pageRange: [1, 2, 3, 4, 5]
     };
   }
 
@@ -28,7 +30,7 @@ class PageBar extends Component {
   };
 
   render() {
-    const { pageRange, upperPageBound } = this.state;
+    const { pageRange } = this.state;
     const { page } = this.props;
 
     const previousButton = page => (
@@ -77,7 +79,6 @@ class PageBar extends Component {
 
   setPageRange = page => {
     let { pageRange } = this.state;
-    const { upperPageBound } = this.props;
 
     let firstPage = pageRange[0];
     let lastPage = pageRange[pageRange.length - 1];
