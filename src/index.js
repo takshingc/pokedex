@@ -15,7 +15,7 @@ ReactDOM.render(
         <NavBar />
       </div>
       <Switch>
-        <Route path="/pokemons/:id" component={Pokemon} />
+        <Route path="/pokemons/:id/" component={Pokemon} />
         <Route exact path="/pokemons">
           <Redirect to="/1" />
         </Route>
