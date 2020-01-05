@@ -25,7 +25,7 @@ class NavBar extends Component {
         <div className="collapse navbar-collapse" id="navbarsExample05">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <Link className="btn btn-link nav-link" to="/1">
+              <Link className="btn btn-link nav-link" to="/1/">
                 Home <span className="sr-only">(current)</span>
               </Link>
             </li>

@@ -17,11 +17,11 @@ ReactDOM.render(
       <Switch>
         <Route path="/pokemons/:id/" component={Pokemon} />
         <Route exact path="/pokemons">
-          <Redirect to="/1" />
+          <Redirect to="/1/" />
         </Route>
-        <Route path="/:page" component={App} />
+        <Route path="/:page/" component={App} />
         <Route exact path="/">
-          <Redirect to="/1" />
+          <Redirect to="/1/" />
         </Route>
       </Switch>
     </div>
