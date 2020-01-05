@@ -15,15 +15,20 @@ class Pokemon extends Component {
 
   async componentDidMount() {
     const marginTop = getMarginTop("navbardiv", 10);
+    this.setState({ marginTop });
+
     const { params } = this.props.match;
     const id = parseInt(params.id, 10);
     this.cry.volume = VOLUME;
-    this.setState({ marginTop });
     this.setInfo(id);
   }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     const { params } = this.props.match;
+    const marginTop = getMarginTop("navbardiv", 10);
+    if (prevState.marginTop !== marginTop) {
+      this.setState({ marginTop });
+    }
     if (prevProps.match.params.id !== params.id) {
       const id = parseInt(params.id, 10);
       this.cry.volume = VOLUME;
@@ -36,7 +41,7 @@ class Pokemon extends Component {
     const id = parseInt(params.id, 10);
     const { marginTop, name, types, stats, sprites } = this.state;
     return (
-      <div className="container" style={{ marginTop }}>
+      <div className="container" style={{ marginTop, maxWidth: 800 }}>
         <audio ref={a => (this.cry = a)} src={`${CRY_URL}/${id}.mp3`} />
         <div className="d-flex align-items-end">
           <h1 className="mb-0 mr-2" style={{ textTransform: "capitalize" }}>

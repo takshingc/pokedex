@@ -5,13 +5,18 @@ import Pokedex from "./components/Pokedex";
 import { getMarginTop } from "./components/utils";
 
 class App extends Component {
-  state = {
-    marginTop: 50
-  };
+  state = {};
 
   componentDidMount() {
     const marginTop = getMarginTop("navbardiv", 10);
     this.setState({ marginTop });
+  }
+
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    const marginTop = getMarginTop("navbardiv", 10);
+    if (prevState.marginTop !== marginTop) {
+      this.setState({ marginTop });
+    }
   }
 
   render() {
