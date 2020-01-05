@@ -18,12 +18,23 @@ class Pokemon extends Component {
     const { params } = this.props.match;
     const id = parseInt(params.id, 10);
     this.cry.volume = VOLUME;
-    this.setState({ marginTop, id });
+    this.setState({ marginTop });
     this.setInfo(id);
   }
 
+  async componentDidUpdate(prevProps, prevState, snapshot) {
+    const { params } = this.props.match;
+    if (prevProps.match.params.id !== params.id) {
+      const id = parseInt(params.id, 10);
+      this.cry.volume = VOLUME;
+      this.setInfo(id);
+    }
+  }
+
   render() {
-    const { marginTop, id, name, types, stats, sprites } = this.state;
+    const { params } = this.props.match;
+    const id = parseInt(params.id, 10);
+    const { marginTop, name, types, stats, sprites } = this.state;
     return (
       <div className="container" style={{ marginTop }}>
         <audio ref={a => (this.cry = a)} src={`${CRY_URL}/${id}.mp3`} />
