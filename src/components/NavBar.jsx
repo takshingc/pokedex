@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function NavBar(props) {
+function NavBar() {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-      <button className="btn btn-link navbar-brand">PokeDex</button>
+      <span className="navbar-brand">PokeDex</span>
       <button
         className="navbar-toggler"
         type="button"
@@ -19,9 +20,9 @@ function NavBar(props) {
       <div className="collapse navbar-collapse" id="navbarsExample05">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <button className="btn btn-link nav-link">
+            <Link className="btn btn-link nav-link" to="/1">
               Home <span className="sr-only">(current)</span>
-            </button>
+            </Link>
           </li>
           <li className="nav-item">
             <button className="btn btn-link nav-link">Link</button>
