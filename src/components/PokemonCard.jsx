@@ -26,7 +26,7 @@ class PokemonCard extends Component {
   render() {
     const { id, name, imageUrl, isLoading } = this.state;
     return (
-      <Link to={`/pokemons/${id}`} style={{ textDecoration: "none" }}>
+      <Link to={`/pokemons/${id}/`} style={{ textDecoration: "none" }}>
         <div className="card h-100">
           <img
             className="card-img-top mx-auto"

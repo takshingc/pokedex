@@ -80,7 +80,7 @@ function SearchBox() {
     try {
       const resp = await axios.get(`${API_URL}/${pokemon}`);
       const { id } = resp.data;
-      history.push(`/pokemons/${id}`);
+      history.push(`/pokemons/${id}/`);
     } catch (e) {
       console.log(e);
     }
