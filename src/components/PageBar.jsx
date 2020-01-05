@@ -36,7 +36,7 @@ class PageBar extends Component {
       <nav aria-label="..." className="navbar">
         <ul className="pagination mx-auto">
           <li className={"page-item" + (page <= 1 && " disabled")}>
-            <Link className="page-link" to={`/${page - 1}`}>
+            <Link className="page-link" to={`/${page - 1}/`}>
               Previous
             </Link>
           </li>
@@ -45,13 +45,13 @@ class PageBar extends Component {
               key={number}
               className={"page-item" + (page === number && " active")}
             >
-              <Link className="page-link active" to={`/${number}`}>
+              <Link className="page-link active" to={`/${number}/`}>
                 {number}
               </Link>
             </li>
           ))}
           <li className={"page-item" + (page >= upperPageBound && " disabled")}>
-            <Link className="page-link" to={`/${page + 1}`}>
+            <Link className="page-link" to={`/${page + 1}/`}>
               Next
             </Link>
           </li>
