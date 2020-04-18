@@ -1,14 +1,59 @@
 import axios from "axios";
-import React, { Component } from "react";
+import React from "react";
 import { Link, useHistory } from "react-router-dom";
 
 const env = process.env;
 const API_URL = env.REACT_APP_API_URL;
 
-class NavBar extends Component {
-  render() {
+function NavBar() {
+  function Bar() {
+    function NavItem(props) {
+      return (
+        <li className="nav-item active">
+          <Link className="btn btn-link nav-link" to={props.target}>
+            {props.name}
+          </Link>
+        </li>
+      );
+    }
+
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+      <ul className="navbar-nav mr-auto">
+        <NavItem name="Home" target="/1/" />
+        <NavItem name="Link" />
+
+        <li className="nav-item dropdown">
+          <button
+            className="btn btn-link nav-link dropdown-toggle"
+            id="dropdown05"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Dropdown
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdown05">
+            <a className="dropdown-item" href="/#">
+              Action
+            </a>
+            <a className="dropdown-item" href="/#">
+              Another action
+            </a>
+            <a className="dropdown-item" href="/#">
+              Something else here
+            </a>
+          </div>
+        </li>
+      </ul>
+    );
+  }
+
+  return (
+    <div
+      id="navbar"
+      style={{ position: "fixed", top: 0, width: "100%", zIndex: 1 }}
+    >
+      <nav className="navbar navbar-expand-sm navbar-dark bg-dark">
         <span className="navbar-brand">PokeDex</span>
         <button
           className="navbar-toggler"
@@ -23,52 +68,12 @@ class NavBar extends Component {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarsExample05">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <Link className="btn btn-link nav-link" to="/1/">
-                Home <span className="sr-only">(current)</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <button className="btn btn-link nav-link">Link</button>
-            </li>
-            <li className="nav-item">
-              <button
-                className="btn btn-link nav-link disabled"
-                tabIndex="-1"
-                aria-disabled="true"
-              >
-                Disabled
-              </button>
-            </li>
-            <li className="nav-item dropdown">
-              <button
-                className="btn btn-link nav-link dropdown-toggle"
-                id="dropdown05"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Dropdown
-              </button>
-              <div className="dropdown-menu" aria-labelledby="dropdown05">
-                <a className="dropdown-item" href="/#">
-                  Action
-                </a>
-                <a className="dropdown-item" href="/#">
-                  Another action
-                </a>
-                <a className="dropdown-item" href="/#">
-                  Something else here
-                </a>
-              </div>
-            </li>
-          </ul>
+          <Bar />
           <SearchBox />
         </div>
       </nav>
-    );
-  }
+    </div>
+  );
 }
 
 function SearchBox() {

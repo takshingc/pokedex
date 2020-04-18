@@ -8,12 +8,12 @@ class App extends Component {
   state = {};
 
   componentDidMount() {
-    const marginTop = getMarginTop("navbardiv", 10);
+    const marginTop = getMarginTop("navbar", 10);
     this.setState({ marginTop });
   }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
-    const marginTop = getMarginTop("navbardiv", 10);
+    const marginTop = getMarginTop("navbar", 10);
     if (prevState.marginTop !== marginTop) {
       this.setState({ marginTop });
     }
