@@ -10,21 +10,17 @@ import "bootstrap/dist/css/bootstrap.css";
 
 ReactDOM.render(
   <BrowserRouter>
-    <div>
-      <div id="navbardiv">
-        <NavBar />
-      </div>
-      <Switch>
-        <Route path="/pokemons/:id/" component={Pokemon} />
-        <Route exact path="/pokemons">
-          <Redirect to="/1/" />
-        </Route>
-        <Route path="/:page/" component={App} />
-        <Route exact path="/">
-          <Redirect to="/1/" />
-        </Route>
-      </Switch>
-    </div>
+    <NavBar />
+    <Switch>
+      <Route path="/pokemons/:id/" component={Pokemon} />
+      <Route exact path="/pokemons">
+        <Redirect to="/1/" />
+      </Route>
+      <Route path="/:page/" component={App} />
+      <Route exact path="/">
+        <Redirect to="/1/" />
+      </Route>
+    </Switch>
   </BrowserRouter>,
   document.getElementById("root")
 );
